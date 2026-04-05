@@ -1,8 +1,3 @@
-# Résultats de tests
-results.json
-historique.json
-dashboard.html
-
 # Python
 __pycache__/
 *.pyc
