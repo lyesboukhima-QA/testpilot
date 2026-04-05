@@ -88,6 +88,12 @@ def generer_html(donnees: dict, historique: list) -> str:
     else:
         taux_color = "#ef4444"
 
+    # Pré-calculer les barres du graphique (compatibilité Python 3.11)
+    chart_bars_html = ""
+    for l, t in zip(hist_labels, hist_taux):
+        bar_color = "var(--accent-green)" if t >= 80 else "var(--accent-amber)" if t >= 50 else "var(--accent-red)"
+        chart_bars_html += f'<div class="chart-bar-wrapper"><div class="chart-value">{t}%</div><div class="chart-bar" style="height: {max(t * 1.6, 8)}px; background: {bar_color}"></div><div class="chart-label">{l}</div></div>'
+
     html = f"""<!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -478,20 +484,7 @@ def generer_html(donnees: dict, historique: list) -> str:
             </div>
         </div>
 
-        {"" if not historique else f'''
-        <div class="historique-section">
-            <div class="section-title">📈 Historique des runs</div>
-            <div class="chart-container">
-                {"".join(f"""
-                <div class="chart-bar-wrapper">
-                    <div class="chart-value">{t}%</div>
-                    <div class="chart-bar" style="height: {max(t * 1.6, 8)}px; background: {'var(--accent-green)' if t >= 80 else 'var(--accent-amber)' if t >= 50 else 'var(--accent-red)'}"></div>
-                    <div class="chart-label">{l}</div>
-                </div>
-                """ for l, t in zip(hist_labels, hist_taux))}
-            </div>
-        </div>
-        '''}
+        {"" if not historique else f'<div class="historique-section"><div class="section-title">📈 Historique des runs</div><div class="chart-container">' + chart_bars_html + '</div></div>'}
 
         <div class="tests-section">
             <div class="section-title">🧪 Détail des tests</div>
