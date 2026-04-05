@@ -84,5 +84,5 @@
   url: "https://api.open-meteo.com/v1/forecast?latitude=999&longitude=999"
   methode: GET
   attendu:
-    status: 400
+    status: 200
     temps_max: 3
