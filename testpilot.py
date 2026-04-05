@@ -22,7 +22,7 @@ def main():
 
     print()
     print("=" * 50)
-    print("  ✈  TestPilot - Automatisation de tests API")
+    print("    TestPilot - Automatisation de tests API")
     print("=" * 50)
 
     # Étape 1 : Exécuter les tests
@@ -32,9 +32,9 @@ def main():
     run_report()
 
     if code_sortie == 0:
-        print("🎉 Tout est vert ! Ouvre dashboard.html pour voir les résultats.")
+        print(" Tout est vert ! Ouvre dashboard.html pour voir les résultats.")
     else:
-        print("⚠️  Certains tests ont échoué. Consulte le dashboard pour les détails.")
+        print(" Certains tests ont échoué. Consulte le dashboard pour les détails.")
 
     return code_sortie
 
