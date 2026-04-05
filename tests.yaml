@@ -64,3 +64,42 @@
     temps_max: 3
     contient:
       error: false
+
+# ============================================
+# TestPilot - Tests Open-Meteo (open-meteo.com)
+# ============================================
+
+- nom: "Météo actuelle à Montréal"
+  url: "https://api.open-meteo.com/v1/forecast?latitude=45.5017&longitude=-73.5673&current_weather=true"
+  methode: GET
+  attendu:
+    status: 200
+    temps_max: 3
+    contient:
+      current_weather:
+        temperature: true
+
+- nom: "Prévisions sur 7 jours à Paris"
+  url: "https://api.open-meteo.com/v1/forecast?latitude=48.8566&longitude=2.3522&daily=temperature_2m_max,temperature_2m_min&timezone=Europe/Paris"
+  methode: GET
+  attendu:
+    status: 200
+    temps_max: 3
+    contient:
+      daily: true
+
+- nom: "Météo horaire à Québec"
+  url: "https://api.open-meteo.com/v1/forecast?latitude=46.8139&longitude=-71.2080&hourly=temperature_2m&timezone=America/Toronto"
+  methode: GET
+  attendu:
+    status: 200
+    temps_max: 3
+    contient:
+      hourly: true
+
+- nom: "Paramètres invalides retourne une erreur"
+  url: "https://api.open-meteo.com/v1/forecast"
+  methode: GET
+  attendu:
+    status: 400
+    temps_max: 3
