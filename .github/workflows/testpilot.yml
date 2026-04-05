@@ -6,10 +6,28 @@ on:
   pull_request:
     branches: ["**"]
   schedule:
-    - cron: "0 12 * * *"
+    - cron: "0 12 * * *"  # 8h EDT (été, UTC-4)
+    - cron: "0 13 * * *"  # 8h EST (hiver, UTC-5)
 
 jobs:
+  check-time:
+    runs-on: ubuntu-latest
+    outputs:
+      run: ${{ steps.check.outputs.run }}
+    steps:
+      - name: Vérifier l'heure au Québec
+        id: check
+        run: |
+          HOUR=$(TZ="America/Toronto" date +%H)
+          if [ "$HOUR" = "08" ] || [ "${{ github.event_name }}" != "schedule" ]; then
+            echo "run=true" >> $GITHUB_OUTPUT
+          else
+            echo "run=false" >> $GITHUB_OUTPUT
+          fi
+
   run-tests:
+    needs: check-time
+    if: needs.check-time.outputs.run == 'true'
     runs-on: ubuntu-latest
 
     steps:
