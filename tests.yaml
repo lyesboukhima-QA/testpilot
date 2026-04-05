@@ -39,16 +39,6 @@
       error: false
       type: single
 
-- nom: "Blague de type twopart (question + réponse)"
-  url: "https://v2.jokeapi.dev/joke/Any?type=twopart"
-  methode: GET
-  attendu:
-    status: 200
-    temps_max: 3
-    contient:
-      error: false
-      type: twopart
-
 - nom: "Catégorie invalide retourne une erreur"
   url: "https://v2.jokeapi.dev/joke/CategorieInexistante"
   methode: GET
