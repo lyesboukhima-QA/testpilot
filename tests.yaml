@@ -1,0 +1,56 @@
+# ============================================
+# TestPilot - Fichier de scénarios de test
+# ============================================
+# Chaque test vérifie qu'une API répond correctement.
+# Tu peux ajouter autant de tests que tu veux !
+
+- nom: "Page d'accueil accessible"
+  url: "https://jsonplaceholder.typicode.com/posts"
+  methode: GET
+  attendu:
+    status: 200
+    temps_max: 3
+
+- nom: "Récupérer un post spécifique"
+  url: "https://jsonplaceholder.typicode.com/posts/1"
+  methode: GET
+  attendu:
+    status: 200
+    temps_max: 2
+    contient:
+      userId: 1
+      id: 1
+
+- nom: "Créer un nouveau post"
+  url: "https://jsonplaceholder.typicode.com/posts"
+  methode: POST
+  headers:
+    Content-Type: "application/json"
+  body:
+    title: "Test automatisé"
+    body: "Ceci est un test créé par TestPilot"
+    userId: 1
+  attendu:
+    status: 201
+    temps_max: 3
+
+- nom: "Ressource inexistante retourne 404"
+  url: "https://jsonplaceholder.typicode.com/posts/99999"
+  methode: GET
+  attendu:
+    status: 404
+    temps_max: 2
+
+- nom: "Liste des utilisateurs accessible"
+  url: "https://jsonplaceholder.typicode.com/users"
+  methode: GET
+  attendu:
+    status: 200
+    temps_max: 3
+
+- nom: "Récupérer les commentaires d'un post"
+  url: "https://jsonplaceholder.typicode.com/posts/1/comments"
+  methode: GET
+  attendu:
+    status: 200
+    temps_max: 3
