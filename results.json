@@ -1,124 +1,122 @@
 {
   "resume": {
     "total": 11,
-    "passes": 10,
-    "echecs": 1,
-    "temps_moyen": 0.362,
-    "taux_reussite": 90.9,
-    "date": "2026-04-05T07:36:37.561875"
+    "passes": 11,
+    "echecs": 0,
+    "temps_moyen": 0.298,
+    "taux_reussite": 100.0,
+    "date": "2026-04-05T07:38:31.746528"
   },
   "resultats": [
     {
       "nom": "Récupérer une blague aléatoire",
       "url": "https://v2.jokeapi.dev/joke/Any",
       "methode": "GET",
-      "statut": "FAIL",
-      "temps_reponse": 0.276,
+      "statut": "PASS",
+      "temps_reponse": 0.223,
       "status_code": 200,
-      "erreurs": [
-        "Status attendu 300, reçu 200"
-      ],
-      "timestamp": "2026-04-05T07:36:33.573206"
+      "erreurs": [],
+      "timestamp": "2026-04-05T07:38:28.455686"
     },
     {
       "nom": "Blague de programmation",
       "url": "https://v2.jokeapi.dev/joke/Programming",
       "methode": "GET",
       "statut": "PASS",
-      "temps_reponse": 0.214,
+      "temps_reponse": 0.402,
       "status_code": 200,
       "erreurs": [],
-      "timestamp": "2026-04-05T07:36:33.849734"
+      "timestamp": "2026-04-05T07:38:28.680051"
     },
     {
       "nom": "Blague en mode safe (sans contenu offensant)",
       "url": "https://v2.jokeapi.dev/joke/Any?safe-mode",
       "methode": "GET",
       "statut": "PASS",
-      "temps_reponse": 0.211,
+      "temps_reponse": 0.168,
       "status_code": 200,
       "erreurs": [],
-      "timestamp": "2026-04-05T07:36:34.063994"
+      "timestamp": "2026-04-05T07:38:29.083053"
     },
     {
       "nom": "Blague de type single",
       "url": "https://v2.jokeapi.dev/joke/Any?type=single",
       "methode": "GET",
       "statut": "PASS",
-      "temps_reponse": 0.213,
+      "temps_reponse": 0.165,
       "status_code": 200,
       "erreurs": [],
-      "timestamp": "2026-04-05T07:36:34.275297"
+      "timestamp": "2026-04-05T07:38:29.251163"
     },
     {
       "nom": "Blague de type twopart (question + réponse)",
       "url": "https://v2.jokeapi.dev/joke/Any?type=twopart",
       "methode": "GET",
       "statut": "PASS",
-      "temps_reponse": 0.218,
+      "temps_reponse": 0.156,
       "status_code": 200,
       "erreurs": [],
-      "timestamp": "2026-04-05T07:36:34.489068"
+      "timestamp": "2026-04-05T07:38:29.416393"
     },
     {
       "nom": "Catégorie invalide retourne une erreur",
       "url": "https://v2.jokeapi.dev/joke/CategorieInexistante",
       "methode": "GET",
       "statut": "PASS",
-      "temps_reponse": 0.216,
+      "temps_reponse": 0.164,
       "status_code": 400,
       "erreurs": [],
-      "timestamp": "2026-04-05T07:36:34.707546"
+      "timestamp": "2026-04-05T07:38:29.573321"
     },
     {
       "nom": "Blague en français",
       "url": "https://v2.jokeapi.dev/joke/Any?lang=fr",
       "methode": "GET",
       "statut": "PASS",
-      "temps_reponse": 0.234,
+      "temps_reponse": 0.157,
       "status_code": 200,
       "erreurs": [],
-      "timestamp": "2026-04-05T07:36:34.924564"
+      "timestamp": "2026-04-05T07:38:29.737710"
     },
     {
       "nom": "Météo actuelle à Montréal",
       "url": "https://api.open-meteo.com/v1/forecast?latitude=45.5017&longitude=-73.5673&current_weather=true",
       "methode": "GET",
       "statut": "PASS",
-      "temps_reponse": 0.633,
+      "temps_reponse": 0.463,
       "status_code": 200,
       "erreurs": [],
-      "timestamp": "2026-04-05T07:36:35.159506"
+      "timestamp": "2026-04-05T07:38:29.895440"
     },
     {
       "nom": "Prévisions sur 7 jours à Paris",
       "url": "https://api.open-meteo.com/v1/forecast?latitude=48.8566&longitude=2.3522&daily=temperature_2m_max,temperature_2m_min&timezone=Europe/Paris",
       "methode": "GET",
       "statut": "PASS",
-      "temps_reponse": 0.593,
+      "temps_reponse": 0.461,
       "status_code": 200,
       "erreurs": [],
-      "timestamp": "2026-04-05T07:36:35.793205"
+      "timestamp": "2026-04-05T07:38:30.359026"
     },
     {
       "nom": "Météo horaire à Québec",
       "url": "https://api.open-meteo.com/v1/forecast?latitude=46.8139&longitude=-71.2080&hourly=temperature_2m&timezone=America/Toronto",
       "methode": "GET",
       "statut": "PASS",
-      "temps_reponse": 0.602,
+      "temps_reponse": 0.472,
       "status_code": 200,
       "erreurs": [],
-      "timestamp": "2026-04-05T07:36:36.387295"
+      "timestamp": "2026-04-05T07:38:30.821450"
     },
     {
       "nom": "Latitude invalide retourne une erreur",
       "url": "https://api.open-meteo.com/v1/forecast?latitude=999&longitude=999",
       "methode": "GET",
       "statut": "PASS",
-      "temps_reponse": 0.571,
+      "temps_reponse": 0.452,
       "status_code": 400,
       "erreurs": [],
-      "timestamp": "2026-04-05T07:36:36.989850"
+      "timestamp": "2026-04-05T07:38:31.293601"
     }
   ]
 }
