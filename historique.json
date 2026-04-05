@@ -62,5 +62,13 @@
     "temps_moyen": 0.369,
     "taux_reussite": 100.0,
     "date": "2026-04-05T07:39:53.324414"
+  },
+  {
+    "total": 10,
+    "passes": 9,
+    "echecs": 1,
+    "temps_moyen": 0.24,
+    "taux_reussite": 90.0,
+    "date": "2026-04-05T07:42:17.207298"
   }
 ]

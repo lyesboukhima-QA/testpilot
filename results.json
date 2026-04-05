@@ -1,11 +1,11 @@
 {
   "resume": {
     "total": 10,
-    "passes": 10,
-    "echecs": 0,
-    "temps_moyen": 0.369,
-    "taux_reussite": 100.0,
-    "date": "2026-04-05T07:39:53.324414"
+    "passes": 9,
+    "echecs": 1,
+    "temps_moyen": 0.24,
+    "taux_reussite": 90.0,
+    "date": "2026-04-05T07:42:17.207298"
   },
   "resultats": [
     {
@@ -13,100 +13,102 @@
       "url": "https://v2.jokeapi.dev/joke/Any",
       "methode": "GET",
       "statut": "PASS",
-      "temps_reponse": 0.275,
+      "temps_reponse": 0.16,
       "status_code": 200,
       "erreurs": [],
-      "timestamp": "2026-04-05T07:39:49.627849"
+      "timestamp": "2026-04-05T07:42:14.793569"
     },
     {
       "nom": "Blague de programmation",
       "url": "https://v2.jokeapi.dev/joke/Programming",
       "methode": "GET",
       "statut": "PASS",
-      "temps_reponse": 0.193,
+      "temps_reponse": 0.143,
       "status_code": 200,
       "erreurs": [],
-      "timestamp": "2026-04-05T07:39:49.903507"
+      "timestamp": "2026-04-05T07:42:14.954676"
     },
     {
       "nom": "Blague en mode safe (sans contenu offensant)",
       "url": "https://v2.jokeapi.dev/joke/Any?safe-mode",
       "methode": "GET",
       "statut": "PASS",
-      "temps_reponse": 0.185,
+      "temps_reponse": 0.139,
       "status_code": 200,
       "erreurs": [],
-      "timestamp": "2026-04-05T07:39:50.097213"
+      "timestamp": "2026-04-05T07:42:15.098314"
     },
     {
       "nom": "Blague de type single",
       "url": "https://v2.jokeapi.dev/joke/Any?type=single",
       "methode": "GET",
       "statut": "PASS",
-      "temps_reponse": 0.186,
+      "temps_reponse": 0.143,
       "status_code": 200,
       "erreurs": [],
-      "timestamp": "2026-04-05T07:39:50.283170"
+      "timestamp": "2026-04-05T07:42:15.238446"
     },
     {
       "nom": "Catégorie invalide retourne une erreur",
       "url": "https://v2.jokeapi.dev/joke/CategorieInexistante",
       "methode": "GET",
       "statut": "PASS",
-      "temps_reponse": 0.19,
+      "temps_reponse": 0.133,
       "status_code": 400,
       "erreurs": [],
-      "timestamp": "2026-04-05T07:39:50.469559"
+      "timestamp": "2026-04-05T07:42:15.382688"
     },
     {
       "nom": "Blague en français",
       "url": "https://v2.jokeapi.dev/joke/Any?lang=fr",
       "methode": "GET",
       "statut": "PASS",
-      "temps_reponse": 0.189,
+      "temps_reponse": 0.136,
       "status_code": 200,
       "erreurs": [],
-      "timestamp": "2026-04-05T07:39:50.660426"
+      "timestamp": "2026-04-05T07:42:15.516618"
     },
     {
       "nom": "Météo actuelle à Montréal",
       "url": "https://api.open-meteo.com/v1/forecast?latitude=45.5017&longitude=-73.5673&current_weather=true",
       "methode": "GET",
       "statut": "PASS",
-      "temps_reponse": 0.634,
+      "temps_reponse": 0.386,
       "status_code": 200,
       "erreurs": [],
-      "timestamp": "2026-04-05T07:39:50.849953"
+      "timestamp": "2026-04-05T07:42:15.653482"
     },
     {
       "nom": "Prévisions sur 7 jours à Paris",
       "url": "https://api.open-meteo.com/v1/forecast?latitude=48.8566&longitude=2.3522&daily=temperature_2m_max,temperature_2m_min&timezone=Europe/Paris",
       "methode": "GET",
       "statut": "PASS",
-      "temps_reponse": 0.61,
+      "temps_reponse": 0.38,
       "status_code": 200,
       "erreurs": [],
-      "timestamp": "2026-04-05T07:39:51.484395"
+      "timestamp": "2026-04-05T07:42:16.040468"
     },
     {
       "nom": "Météo horaire à Québec",
       "url": "https://api.open-meteo.com/v1/forecast?latitude=46.8139&longitude=-71.2080&hourly=temperature_2m&timezone=America/Toronto",
       "methode": "GET",
       "statut": "PASS",
-      "temps_reponse": 0.611,
+      "temps_reponse": 0.393,
       "status_code": 200,
       "erreurs": [],
-      "timestamp": "2026-04-05T07:39:52.095145"
+      "timestamp": "2026-04-05T07:42:16.421426"
     },
     {
       "nom": "Latitude invalide retourne une erreur",
       "url": "https://api.open-meteo.com/v1/forecast?latitude=999&longitude=999",
       "methode": "GET",
-      "statut": "PASS",
-      "temps_reponse": 0.616,
+      "statut": "FAIL",
+      "temps_reponse": 0.392,
       "status_code": 400,
-      "erreurs": [],
-      "timestamp": "2026-04-05T07:39:52.707141"
+      "erreurs": [
+        "Status attendu 200, reçu 400"
+      ],
+      "timestamp": "2026-04-05T07:42:16.814885"
     }
   ]
 }
