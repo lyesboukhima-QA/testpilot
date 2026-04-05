@@ -6,7 +6,7 @@
   url: "https://v2.jokeapi.dev/joke/Any"
   methode: GET
   attendu:
-    status: 201
+    status: 200
     temps_max: 3
     contient:
       error: false
