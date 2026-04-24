@@ -5,11 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Welcome back!</title>
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
 
     body {
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
@@ -18,206 +14,316 @@
       overflow: hidden;
     }
 
-    /* ── LEFT PANEL ── */
+    /* ══════════════════════════════
+       LEFT PANEL
+    ══════════════════════════════ */
     .left-panel {
       flex: 1;
-      background-color: #e8e4f0;
+      background: #e8e4f0;
       display: flex;
       align-items: center;
       justify-content: center;
-      position: relative;
       overflow: hidden;
     }
 
-    .characters {
+    .scene {
       position: relative;
-      width: 280px;
-      height: 280px;
+      width: 300px;
+      height: 300px;
     }
 
-    /* Orange circle (bottom-left) */
-    .char-orange {
+    /* ── Shared char wrapper ── */
+    .char {
       position: absolute;
-      bottom: 0;
-      left: 0;
-      width: 140px;
-      height: 140px;
+      transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    /* ══════════════════════════════
+       ORANGE CIRCLE
+    ══════════════════════════════ */
+    .orange-wrap {
+      bottom: 0; left: 0;
+      width: 148px; height: 148px;
+      animation: bob1 3s ease-in-out infinite;
+    }
+    .orange-body {
+      position: absolute;
+      inset: 0;
       background: #f4692b;
       border-radius: 50%;
-      animation: float1 3s ease-in-out infinite;
     }
-    .char-orange::before,
-    .char-orange::after {
-      content: '';
+    /* eyes */
+    .orange-wrap .eye {
       position: absolute;
       background: #1a1a1a;
       border-radius: 50%;
-      width: 12px;
-      height: 12px;
-      top: 45px;
+      width: 13px; height: 13px;
+      top: 48px;
+      transition: all 0.35s cubic-bezier(0.34,1.56,0.64,1);
     }
-    .char-orange::before { left: 38px; }
-    .char-orange::after  { left: 62px; }
-    /* smile */
-    .char-orange .smile {
+    .orange-wrap .eye.l { left: 38px; }
+    .orange-wrap .eye.r { left: 66px; }
+    /* mouth */
+    .orange-wrap .mouth {
       position: absolute;
-      bottom: 32px;
-      left: 30px;
-      width: 50px;
-      height: 22px;
-      border: 3px solid #1a1a1a;
+      width: 52px; height: 24px;
+      border: 3.5px solid #1a1a1a;
       border-top: none;
       border-radius: 0 0 40px 40px;
+      bottom: 34px; left: 28px;
+      transition: all 0.35s ease;
     }
-
-    /* Yellow blob (bottom-center) */
-    .char-yellow {
+    /* arms — start hidden below the circle */
+    .orange-wrap .arm {
       position: absolute;
-      bottom: 0;
-      left: 110px;
-      width: 90px;
-      height: 120px;
-      background: #f5c842;
-      border-radius: 50px 50px 40px 40px;
-      animation: float2 3.4s ease-in-out infinite;
+      width: 34px; height: 60px;
+      background: #d95a20;
+      border-radius: 17px;
+      bottom: -62px;
+      transition: bottom 0.45s cubic-bezier(0.34, 1.56, 0.64, 1);
+      z-index: 10;
     }
-    .char-yellow::before,
-    .char-yellow::after {
-      content: '';
+    .orange-wrap .arm.l { left: 14px;  transform: rotate(12deg);  }
+    .orange-wrap .arm.r { right: 14px; transform: rotate(-12deg); }
+
+    /* ══════════════════════════════
+       YELLOW BLOB
+    ══════════════════════════════ */
+    .yellow-wrap {
+      bottom: 0; left: 115px;
+      width: 95px; height: 128px;
+      animation: bob2 3.4s ease-in-out infinite;
+    }
+    .yellow-body {
+      position: absolute;
+      inset: 0;
+      background: #f5c842;
+      border-radius: 52px 52px 42px 42px;
+    }
+    .yellow-wrap .eye {
       position: absolute;
       background: #1a1a1a;
       border-radius: 50%;
-      width: 9px;
-      height: 9px;
-      top: 42px;
+      width: 10px; height: 10px;
+      top: 44px;
+      transition: all 0.35s cubic-bezier(0.34,1.56,0.64,1);
     }
-    .char-yellow::before { left: 26px; }
-    .char-yellow::after  { left: 50px; }
-    .char-yellow .mouth {
+    .yellow-wrap .eye.l { left: 22px; }
+    .yellow-wrap .eye.r { left: 54px; }
+    .yellow-wrap .mouth {
       position: absolute;
-      bottom: 28px;
-      left: 22px;
-      width: 30px;
-      height: 3px;
+      width: 32px; height: 3.5px;
       background: #1a1a1a;
-      border-radius: 2px;
+      border-radius: 3px;
+      bottom: 30px; left: 20px;
+      transition: all 0.35s ease;
     }
 
-    /* Dark rectangle (center) */
-    .char-dark {
-      position: absolute;
-      bottom: 60px;
-      left: 155px;
-      width: 65px;
-      height: 130px;
-      background: #1a1a1a;
-      border-radius: 8px 8px 4px 4px;
-      animation: float3 2.8s ease-in-out infinite;
+    /* ══════════════════════════════
+       DARK RECTANGLE
+    ══════════════════════════════ */
+    .dark-wrap {
+      bottom: 65px; left: 163px;
+      width: 68px; height: 135px;
+      animation: bob3 2.8s ease-in-out infinite;
     }
-    .char-dark::before,
-    .char-dark::after {
-      content: '';
+    .dark-body {
+      position: absolute;
+      inset: 0;
+      background: #1a1a1a;
+      border-radius: 9px 9px 5px 5px;
+    }
+    .dark-wrap .eye {
       position: absolute;
       background: #e8e4f0;
       border-radius: 50%;
-      width: 9px;
-      height: 9px;
-      top: 38px;
+      width: 10px; height: 10px;
+      top: 40px;
+      transition: all 0.35s cubic-bezier(0.34,1.56,0.64,1);
     }
-    .char-dark::before { left: 14px; }
-    .char-dark::after  { left: 36px; }
+    .dark-wrap .eye.l { left: 12px; }
+    .dark-wrap .eye.r { left: 38px; }
 
-    /* Purple rectangle (tallest, back) */
-    .char-purple {
-      position: absolute;
-      bottom: 80px;
-      left: 60px;
-      width: 80px;
-      height: 180px;
-      background: #6b4fd4;
-      border-radius: 10px 10px 5px 5px;
-      animation: float4 3.2s ease-in-out infinite;
+    /* ══════════════════════════════
+       PURPLE RECTANGLE
+    ══════════════════════════════ */
+    .purple-wrap {
+      bottom: 85px; left: 62px;
+      width: 84px; height: 190px;
+      animation: bob4 3.2s ease-in-out infinite;
     }
-    .char-purple::before,
-    .char-purple::after {
-      content: '';
+    .purple-body {
+      position: absolute;
+      inset: 0;
+      background: #6b4fd4;
+      border-radius: 11px 11px 6px 6px;
+    }
+    .purple-wrap .eye {
       position: absolute;
       background: #1a1a1a;
       border-radius: 50%;
-      width: 10px;
-      height: 10px;
-      top: 50px;
+      width: 11px; height: 11px;
+      top: 55px;
+      transition: all 0.35s cubic-bezier(0.34,1.56,0.64,1);
     }
-    .char-purple::before { left: 20px; }
-    .char-purple::after  { left: 44px; }
+    .purple-wrap .eye.l { left: 17px; }
+    .purple-wrap .eye.r { left: 46px; }
 
-    @keyframes float1 {
-      0%, 100% { transform: translateY(0); }
-      50%       { transform: translateY(-10px); }
+    /* ══════════════════════════════
+       FLOAT ANIMATIONS
+    ══════════════════════════════ */
+    @keyframes bob1 {
+      0%,100% { transform: translateY(0); }
+      50%      { transform: translateY(-11px); }
     }
-    @keyframes float2 {
-      0%, 100% { transform: translateY(0) rotate(-2deg); }
-      50%       { transform: translateY(-14px) rotate(2deg); }
+    @keyframes bob2 {
+      0%,100% { transform: translateY(0) rotate(-2deg); }
+      50%      { transform: translateY(-15px) rotate(2deg); }
     }
-    @keyframes float3 {
-      0%, 100% { transform: translateY(0) rotate(1deg); }
-      50%       { transform: translateY(-8px) rotate(-1deg); }
+    @keyframes bob3 {
+      0%,100% { transform: translateY(0) rotate(1deg); }
+      50%      { transform: translateY(-9px) rotate(-1deg); }
     }
-    @keyframes float4 {
-      0%, 100% { transform: translateY(0) rotate(-1deg); }
-      50%       { transform: translateY(-12px) rotate(2deg); }
+    @keyframes bob4 {
+      0%,100% { transform: translateY(0) rotate(-1deg); }
+      50%      { transform: translateY(-13px) rotate(2deg); }
     }
 
-    /* ── RIGHT PANEL ── */
+    /* Stop float animation during states so transform works */
+    .scene.email-focus .char,
+    .scene.pw-hidden   .char,
+    .scene.pw-visible  .char { animation: none !important; }
+
+    /* ══════════════════════════════
+       STATE: EMAIL FOCUS
+       → lean right toward form, curious
+    ══════════════════════════════ */
+    .scene.email-focus .purple-wrap { transform: rotate(10deg)  translateX(18px) translateY(8px); }
+    .scene.email-focus .dark-wrap   { transform: rotate(6deg)   translateX(10px); }
+    .scene.email-focus .orange-wrap { transform: translateX(14px) rotate(4deg); }
+    .scene.email-focus .yellow-wrap { transform: translateX(10px) rotate(4deg); }
+    /* eyes glance right */
+    .scene.email-focus .eye { transform: translateX(4px); }
+
+    /* ══════════════════════════════
+       STATE: PASSWORD HIDDEN
+       → turn away, arms cover eyes, sad faces
+    ══════════════════════════════ */
+    .scene.pw-hidden .purple-wrap { transform: rotate(-30deg) translateX(-28px) translateY(12px); }
+    .scene.pw-hidden .dark-wrap   { transform: rotate(-18deg) translateX(-16px); }
+    .scene.pw-hidden .orange-wrap { transform: translateX(-10px) rotate(-6deg); }
+    .scene.pw-hidden .yellow-wrap { transform: rotate(-12deg) translateX(-8px); }
+
+    /* arms shoot up to cover orange eyes */
+    .scene.pw-hidden .orange-wrap .arm { bottom: 44px; }
+
+    /* orange: sad droopy eyes (flat top half-circles) */
+    .scene.pw-hidden .orange-wrap .eye {
+      height: 5px;
+      border-radius: 50% 50% 0 0;
+      top: 53px;
+    }
+    /* orange: frown */
+    .scene.pw-hidden .orange-wrap .mouth {
+      border-radius: 40px 40px 0 0;
+      border-top: 3.5px solid #1a1a1a;
+      border-bottom: none;
+      bottom: 28px; height: 18px;
+    }
+    /* yellow: sad tilted mouth */
+    .scene.pw-hidden .yellow-wrap .mouth { transform: rotate(15deg); bottom: 26px; }
+    /* yellow: droopy eyes */
+    .scene.pw-hidden .yellow-wrap .eye { height: 5px; border-radius: 50% 50% 0 0; top: 49px; }
+    /* dark eyes look away left */
+    .scene.pw-hidden .dark-wrap .eye { transform: translateX(-4px); }
+    /* purple eyes: closed slits */
+    .scene.pw-hidden .purple-wrap .eye { height: 3px; border-radius: 3px; top: 59px; }
+
+    /* ══════════════════════════════
+       STATE: PASSWORD VISIBLE
+       → SHOCKED! wide eyes, mouth O, lean back
+    ══════════════════════════════ */
+    .scene.pw-visible .purple-wrap { transform: rotate(18deg)  translateX(12px)  translateY(-18px); }
+    .scene.pw-visible .dark-wrap   { transform: rotate(10deg)  translateY(-14px) translateX(8px);   }
+    .scene.pw-visible .orange-wrap { transform: translateX(-26px) translateY(-16px) rotate(-10deg); }
+    .scene.pw-visible .yellow-wrap { transform: rotate(-8deg)  translateY(-10px) translateX(-6px);  }
+
+    /* orange: HUGE shocked eyes */
+    .scene.pw-visible .orange-wrap .eye { width: 20px; height: 20px; top: 36px; }
+    .scene.pw-visible .orange-wrap .eye.l { left: 26px; }
+    .scene.pw-visible .orange-wrap .eye.r { left: 58px; }
+    /* orange: open round mouth */
+    .scene.pw-visible .orange-wrap .mouth {
+      width: 26px; height: 26px; border-radius: 50%;
+      border: 3.5px solid #1a1a1a;
+      bottom: 22px; left: 44px;
+    }
+    /* yellow: shocked wide eyes */
+    .scene.pw-visible .yellow-wrap .eye { width: 14px; height: 14px; top: 35px; }
+    .scene.pw-visible .yellow-wrap .eye.l { left: 12px; }
+    .scene.pw-visible .yellow-wrap .eye.r { left: 56px; }
+    /* yellow: open mouth circle */
+    .scene.pw-visible .yellow-wrap .mouth {
+      width: 20px; height: 20px; border-radius: 50%;
+      background: #1a1a1a; bottom: 20px; left: 26px;
+    }
+    /* dark: huge bright eyes */
+    .scene.pw-visible .dark-wrap .eye { width: 14px; height: 14px; top: 30px; }
+    .scene.pw-visible .dark-wrap .eye.l { left: 7px; }
+    .scene.pw-visible .dark-wrap .eye.r { left: 35px; }
+    /* purple: wide shocked eyes */
+    .scene.pw-visible .purple-wrap .eye { width: 15px; height: 15px; top: 46px; }
+    .scene.pw-visible .purple-wrap .eye.l { left: 10px; }
+    .scene.pw-visible .purple-wrap .eye.r { left: 48px; }
+
+
+    /* ══════════════════════════════
+       RIGHT PANEL — FORM
+    ══════════════════════════════ */
     .right-panel {
       flex: 1;
-      background: #ffffff;
+      background: #fff;
       display: flex;
       align-items: center;
       justify-content: center;
       padding: 40px;
     }
 
-    .form-container {
+    .form-box {
       width: 100%;
       max-width: 360px;
     }
 
-    .plus-icon {
-      font-size: 28px;
-      color: #1a1a1a;
-      margin-bottom: 28px;
+    .sparkle {
       display: block;
       text-align: center;
+      font-size: 26px;
+      margin-bottom: 26px;
+      color: #1a1a1a;
     }
 
     h1 {
       font-size: 28px;
       font-weight: 700;
-      color: #1a1a1a;
       text-align: center;
+      color: #1a1a1a;
       margin-bottom: 6px;
     }
-
     .subtitle {
       font-size: 13px;
-      color: #888;
+      color: #999;
       text-align: center;
       margin-bottom: 32px;
     }
 
-    .field {
-      margin-bottom: 20px;
-    }
-
+    .field { margin-bottom: 22px; }
     .field label {
       display: block;
       font-size: 12px;
       color: #555;
-      margin-bottom: 6px;
       font-weight: 500;
+      margin-bottom: 6px;
     }
-
     .field input {
       width: 100%;
       border: none;
@@ -229,46 +335,31 @@
       outline: none;
       transition: border-color 0.2s;
     }
+    .field input:focus { border-bottom-color: #1a1a1a; }
+    .field input::placeholder { color: #bbb; }
 
-    .field input:focus {
-      border-bottom-color: #1a1a1a;
-    }
-
-    .field input::placeholder {
-      color: #bbb;
-    }
-
-    .password-wrapper {
-      position: relative;
-    }
-
-    .password-wrapper input {
-      padding-right: 28px;
-    }
-
-    .toggle-pw {
+    .pw-wrap { position: relative; }
+    .pw-wrap input { padding-right: 30px; }
+    .eye-toggle {
       position: absolute;
-      right: 0;
-      bottom: 8px;
+      right: 0; bottom: 8px;
       background: none;
       border: none;
       cursor: pointer;
-      color: #888;
+      color: #999;
       padding: 0;
-      font-size: 16px;
       line-height: 1;
+      transition: color 0.2s;
     }
+    .eye-toggle:hover { color: #1a1a1a; }
 
-    .toggle-pw:hover { color: #1a1a1a; }
-
-    .options-row {
+    .options {
       display: flex;
       align-items: center;
       justify-content: space-between;
       margin-bottom: 28px;
       font-size: 12px;
     }
-
     .remember {
       display: flex;
       align-items: center;
@@ -276,21 +367,16 @@
       color: #555;
       cursor: pointer;
     }
-
     .remember input[type="checkbox"] {
-      width: 14px;
-      height: 14px;
+      width: 14px; height: 14px;
       accent-color: #1a1a1a;
       cursor: pointer;
     }
-
     .forgot {
-      color: #888;
+      color: #999;
       text-decoration: none;
-      font-size: 12px;
       transition: color 0.2s;
     }
-
     .forgot:hover { color: #1a1a1a; }
 
     .btn-login {
@@ -303,10 +389,9 @@
       font-size: 14px;
       font-weight: 600;
       cursor: pointer;
-      transition: background 0.2s, transform 0.1s;
       margin-bottom: 12px;
+      transition: background 0.2s, transform 0.1s;
     }
-
     .btn-login:hover  { background: #333; }
     .btn-login:active { transform: scale(0.98); }
 
@@ -324,165 +409,178 @@
       align-items: center;
       justify-content: center;
       gap: 10px;
+      margin-bottom: 30px;
       transition: background 0.2s, border-color 0.2s;
-      margin-bottom: 32px;
     }
+    .btn-google:hover { background: #f5f5f5; border-color: #bbb; }
+    .btn-google svg { width: 18px; height: 18px; }
 
-    .btn-google:hover {
-      background: #f5f5f5;
-      border-color: #bbb;
-    }
-
-    .google-icon {
-      width: 18px;
-      height: 18px;
-    }
-
-    .signup-row {
+    .signup {
       text-align: center;
       font-size: 13px;
-      color: #888;
+      color: #999;
     }
-
-    .signup-row a {
+    .signup a {
       color: #1a1a1a;
       font-weight: 600;
       text-decoration: none;
     }
+    .signup a:hover { text-decoration: underline; }
 
-    .signup-row a:hover { text-decoration: underline; }
-
-    /* ── RESPONSIVE ── */
+    /* ── Responsive ── */
     @media (max-width: 700px) {
       body { flex-direction: column; }
-      .left-panel {
-        flex: 0 0 220px;
-        border-radius: 0 0 32px 32px;
-      }
-      .characters {
-        width: 200px;
-        height: 200px;
-        transform: scale(0.75);
-        transform-origin: center bottom;
-      }
+      .left-panel { flex: 0 0 230px; border-radius: 0 0 32px 32px; }
+      .scene { transform: scale(0.78); transform-origin: center bottom; }
       .right-panel { flex: 1; }
     }
   </style>
 </head>
 <body>
 
-  <!-- LEFT: illustration -->
-  <div class="left-panel">
-    <div class="characters">
-      <!-- orange circle -->
-      <div class="char-orange">
-        <div class="smile"></div>
-      </div>
-      <!-- yellow blob -->
-      <div class="char-yellow">
-        <div class="mouth"></div>
-      </div>
-      <!-- dark rectangle -->
-      <div class="char-dark"></div>
-      <!-- purple rectangle (tallest) -->
-      <div class="char-purple"></div>
+<!-- ═══ LEFT — Characters ═══ -->
+<div class="left-panel">
+  <div class="scene" id="scene">
+
+    <!-- ORANGE -->
+    <div class="char orange-wrap">
+      <div class="orange-body"></div>
+      <div class="eye l"></div>
+      <div class="eye r"></div>
+      <div class="mouth"></div>
+      <div class="arm l"></div>
+      <div class="arm r"></div>
     </div>
-  </div>
 
-  <!-- RIGHT: form -->
-  <div class="right-panel">
-    <div class="form-container">
-      <span class="plus-icon">✦</span>
-      <h1>Welcome back!</h1>
-      <p class="subtitle">Please enter your details</p>
-
-      <form onsubmit="handleLogin(event)">
-        <div class="field">
-          <label for="email">Email</label>
-          <input
-            id="email"
-            type="email"
-            placeholder="anna@gmail.com"
-            autocomplete="email"
-          />
-        </div>
-
-        <div class="field">
-          <label for="password">Password</label>
-          <div class="password-wrapper">
-            <input
-              id="password"
-              type="password"
-              placeholder="••••••••••"
-              autocomplete="current-password"
-            />
-            <button
-              type="button"
-              class="toggle-pw"
-              aria-label="Toggle password visibility"
-              onclick="togglePassword()"
-            >
-              <svg id="eye-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18"
-                viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
-                <circle cx="12" cy="12" r="3"/>
-              </svg>
-            </button>
-          </div>
-        </div>
-
-        <div class="options-row">
-          <label class="remember">
-            <input type="checkbox" id="remember" />
-            Remember for 30 days
-          </label>
-          <a href="#" class="forgot">Forgot password?</a>
-        </div>
-
-        <button type="submit" class="btn-login">Log in</button>
-
-        <button type="button" class="btn-google" onclick="handleGoogleLogin()">
-          <svg class="google-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-            <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
-            <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
-            <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"/>
-            <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
-          </svg>
-          Log in with Google
-        </button>
-      </form>
-
-      <p class="signup-row">
-        Don't have an account? <a href="#">Sign Up</a>
-      </p>
+    <!-- YELLOW -->
+    <div class="char yellow-wrap">
+      <div class="yellow-body"></div>
+      <div class="eye l"></div>
+      <div class="eye r"></div>
+      <div class="mouth"></div>
     </div>
+
+    <!-- DARK -->
+    <div class="char dark-wrap">
+      <div class="dark-body"></div>
+      <div class="eye l"></div>
+      <div class="eye r"></div>
+    </div>
+
+    <!-- PURPLE -->
+    <div class="char purple-wrap">
+      <div class="purple-body"></div>
+      <div class="eye l"></div>
+      <div class="eye r"></div>
+    </div>
+
   </div>
+</div>
 
-  <script>
-    function togglePassword() {
-      const input = document.getElementById('password');
-      const icon = document.getElementById('eye-icon');
-      const isHidden = input.type === 'password';
+<!-- ═══ RIGHT — Form ═══ -->
+<div class="right-panel">
+  <div class="form-box">
+    <span class="sparkle">✦</span>
+    <h1>Welcome back!</h1>
+    <p class="subtitle">Please enter your details</p>
 
-      input.type = isHidden ? 'text' : 'password';
+    <form onsubmit="handleSubmit(event)">
+      <div class="field">
+        <label for="email">Email</label>
+        <input id="email" type="email" placeholder="anna@gmail.com" autocomplete="email" />
+      </div>
 
-      icon.innerHTML = isHidden
-        ? `<path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/>`
-        : `<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>`;
-    }
+      <div class="field">
+        <label for="password">Password</label>
+        <div class="pw-wrap">
+          <input id="password" type="password" placeholder="••••••••••" autocomplete="current-password" />
+          <button type="button" class="eye-toggle" id="eyeBtn" onclick="togglePw()" onmousedown="event.preventDefault()" aria-label="Afficher le mot de passe">
+            <svg id="eyeIcon" xmlns="http://www.w3.org/2000/svg" width="18" height="18"
+              viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+              stroke-linecap="round" stroke-linejoin="round">
+              <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+              <circle cx="12" cy="12" r="3"/>
+            </svg>
+          </button>
+        </div>
+      </div>
 
-    function handleLogin(e) {
-      e.preventDefault();
-      const email = document.getElementById('email').value;
-      const password = document.getElementById('password').value;
-      if (!email || !password) return;
-      alert(`Connexion en cours pour ${email}…`);
-    }
+      <div class="options">
+        <label class="remember">
+          <input type="checkbox" id="remember" />
+          Remember for 30 days
+        </label>
+        <a href="#" class="forgot">Forgot password?</a>
+      </div>
 
-    function handleGoogleLogin() {
-      alert('Redirection vers Google OAuth…');
-    }
-  </script>
+      <button type="submit" class="btn-login">Log in</button>
+
+      <button type="button" class="btn-google">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
+          <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+          <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05"/>
+          <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
+        </svg>
+        Log in with Google
+      </button>
+    </form>
+
+    <p class="signup">Don't have an account? <a href="#">Sign Up</a></p>
+  </div>
+</div>
+
+<script>
+  const scene    = document.getElementById('scene');
+  const pwInput  = document.getElementById('password');
+  const eyeIcon  = document.getElementById('eyeIcon');
+
+  let pwFocused  = false;
+  let pwVisible  = false;
+
+  function setState(s) {
+    scene.className = 'scene' + (s ? ' ' + s : '');
+  }
+
+  /* ── Email ── */
+  document.getElementById('email').addEventListener('focus', () => setState('email-focus'));
+  document.getElementById('email').addEventListener('blur',  () => setState(''));
+
+  /* ── Password ── */
+  pwInput.addEventListener('focus', () => {
+    pwFocused = true;
+    setState(pwVisible ? 'pw-visible' : 'pw-hidden');
+  });
+  pwInput.addEventListener('blur', () => {
+    pwFocused = false;
+    setState('');
+  });
+
+  /* ── Toggle visibility ── */
+  function togglePw() {
+    pwVisible = !pwVisible;
+    pwInput.type = pwVisible ? 'text' : 'password';
+
+    eyeIcon.innerHTML = pwVisible
+      ? `<path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8
+           a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4
+           c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07
+           a3 3 0 1 1-4.24-4.24"/>
+         <line x1="1" y1="1" x2="23" y2="23"/>`
+      : `<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+         <circle cx="12" cy="12" r="3"/>`;
+
+    if (pwFocused) setState(pwVisible ? 'pw-visible' : 'pw-hidden');
+  }
+
+  /* ── Submit ── */
+  function handleSubmit(e) {
+    e.preventDefault();
+    const email = document.getElementById('email').value;
+    const pw    = pwInput.value;
+    if (!email || !pw) return;
+    alert('Connexion en cours pour ' + email + ' …');
+  }
+</script>
 </body>
 </html>
