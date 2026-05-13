@@ -1,0 +1,377 @@
+{
+  "info": {
+    "_postman_id": "testpilot-api-collection-v1",
+    "name": "TestPilot - API Pre/Postconditions",
+    "description": "Collection Postman pour les préconditions et postconditions des tests Robot Framework.\n\n- **Preconditions** : Vérifient que les APIs sont disponibles AVANT les tests RF\n- **Postconditions** : Valident l'état des APIs APRÈS les tests RF",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "jokeapi_base_url",
+      "value": "https://v2.jokeapi.dev",
+      "type": "string"
+    },
+    {
+      "key": "weather_base_url",
+      "value": "https://api.open-meteo.com",
+      "type": "string"
+    },
+    {
+      "key": "response_time_threshold",
+      "value": "3000",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "Preconditions",
+      "description": "Vérifications avant l'exécution de la suite Robot Framework.\nSi un test échoue ici, la suite RF ne devrait pas démarrer.",
+      "item": [
+        {
+          "name": "PRE-01 - JokeAPI Health Check",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "console.log('[PRECONDITION] Vérification disponibilité JokeAPI...');"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('PRE-01: JokeAPI est accessible (status 200)', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test('PRE-01: Temps de réponse < 3s', function () {",
+                  "    pm.expect(pm.response.responseTime).to.be.below(3000);",
+                  "});",
+                  "",
+                  "pm.test('PRE-01: Réponse contient un type de blague valide', function () {",
+                  "    const body = pm.response.json();",
+                  "    pm.expect(body).to.have.property('type');",
+                  "    pm.expect(['single', 'twopart']).to.include(body.type);",
+                  "});",
+                  "",
+                  "pm.test('PRE-01: Aucune erreur API retournée', function () {",
+                  "    const body = pm.response.json();",
+                  "    pm.expect(body.error).to.be.false;",
+                  "});",
+                  "",
+                  "// Stocker le type pour les tests suivants",
+                  "const body = pm.response.json();",
+                  "pm.environment.set('joke_type', body.type);",
+                  "console.log('[PRECONDITION] JokeAPI OK - Type:', body.type);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{jokeapi_base_url}}/joke/Any",
+              "host": ["{{jokeapi_base_url}}"],
+              "path": ["joke", "Any"]
+            },
+            "description": "Vérifie que l'API JokeAPI est opérationnelle avant d'exécuter les tests RF."
+          }
+        },
+        {
+          "name": "PRE-02 - Weather API Health Check",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "console.log('[PRECONDITION] Vérification disponibilité Weather API...');"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('PRE-02: Weather API est accessible (status 200)', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test('PRE-02: Temps de réponse < 3s', function () {",
+                  "    pm.expect(pm.response.responseTime).to.be.below(3000);",
+                  "});",
+                  "",
+                  "pm.test('PRE-02: Données météo présentes', function () {",
+                  "    const body = pm.response.json();",
+                  "    pm.expect(body).to.have.property('current_weather');",
+                  "});",
+                  "",
+                  "pm.test('PRE-02: Coordonnées retournées correctement', function () {",
+                  "    const body = pm.response.json();",
+                  "    pm.expect(body).to.have.property('latitude');",
+                  "    pm.expect(body).to.have.property('longitude');",
+                  "});",
+                  "",
+                  "console.log('[PRECONDITION] Weather API OK');"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{weather_base_url}}/v1/forecast?latitude=45.5017&longitude=-73.5673&current_weather=true",
+              "host": ["{{weather_base_url}}"],
+              "path": ["v1", "forecast"],
+              "query": [
+                {"key": "latitude", "value": "45.5017"},
+                {"key": "longitude", "value": "-73.5673"},
+                {"key": "current_weather", "value": "true"}
+              ]
+            },
+            "description": "Vérifie que l'API Weather (Open-Meteo) est opérationnelle avant d'exécuter les tests RF."
+          }
+        },
+        {
+          "name": "PRE-03 - JokeAPI Categories Validation",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "console.log('[PRECONDITION] Validation des catégories JokeAPI...');"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('PRE-03: Endpoint catégories accessible', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test('PRE-03: La catégorie Programming existe', function () {",
+                  "    const body = pm.response.json();",
+                  "    pm.expect(body.categories).to.include('Programming');",
+                  "});",
+                  "",
+                  "pm.test('PRE-03: Au moins 5 catégories disponibles', function () {",
+                  "    const body = pm.response.json();",
+                  "    pm.expect(body.categories.length).to.be.at.least(5);",
+                  "});",
+                  "",
+                  "// Sauvegarder les catégories disponibles",
+                  "const body = pm.response.json();",
+                  "pm.environment.set('available_categories', JSON.stringify(body.categories));",
+                  "console.log('[PRECONDITION] Catégories disponibles:', body.categories);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{jokeapi_base_url}}/categories",
+              "host": ["{{jokeapi_base_url}}"],
+              "path": ["categories"]
+            },
+            "description": "Valide que les catégories attendues sont disponibles dans JokeAPI."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Postconditions",
+      "description": "Vérifications après l'exécution de la suite Robot Framework.\nConfirme que les APIs sont toujours stables après les tests.",
+      "item": [
+        {
+          "name": "POST-01 - JokeAPI Still Operational",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "console.log('[POSTCONDITION] Vérification état final JokeAPI...');"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('POST-01: JokeAPI toujours accessible après les tests', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test('POST-01: Performances non dégradées après les tests', function () {",
+                  "    pm.expect(pm.response.responseTime).to.be.below(3000);",
+                  "});",
+                  "",
+                  "pm.test('POST-01: Réponse structurellement valide', function () {",
+                  "    const body = pm.response.json();",
+                  "    pm.expect(body.error).to.be.false;",
+                  "    pm.expect(body).to.have.property('joke').or.have.property('setup');",
+                  "});",
+                  "",
+                  "console.log('[POSTCONDITION] JokeAPI stable après tests RF');"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{jokeapi_base_url}}/joke/Programming?safe-mode",
+              "host": ["{{jokeapi_base_url}}"],
+              "path": ["joke", "Programming"],
+              "query": [
+                {"key": "safe-mode", "value": null, "disabled": false}
+              ]
+            },
+            "description": "Vérifie que JokeAPI est toujours opérationnelle après l'exécution de la suite RF."
+          }
+        },
+        {
+          "name": "POST-02 - Weather API Still Operational",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "console.log('[POSTCONDITION] Vérification état final Weather API...');"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('POST-02: Weather API toujours accessible après les tests', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test('POST-02: Performances non dégradées', function () {",
+                  "    pm.expect(pm.response.responseTime).to.be.below(3000);",
+                  "});",
+                  "",
+                  "pm.test('POST-02: Structure de réponse intacte', function () {",
+                  "    const body = pm.response.json();",
+                  "    pm.expect(body).to.have.property('latitude');",
+                  "    pm.expect(body).to.have.property('longitude');",
+                  "    pm.expect(body).to.have.property('current_weather');",
+                  "});",
+                  "",
+                  "console.log('[POSTCONDITION] Weather API stable après tests RF');"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{weather_base_url}}/v1/forecast?latitude=48.8566&longitude=2.3522&current_weather=true",
+              "host": ["{{weather_base_url}}"],
+              "path": ["v1", "forecast"],
+              "query": [
+                {"key": "latitude", "value": "48.8566"},
+                {"key": "longitude", "value": "2.3522"},
+                {"key": "current_weather", "value": "true"}
+              ]
+            },
+            "description": "Vérifie que Weather API est toujours opérationnelle après l'exécution de la suite RF."
+          }
+        },
+        {
+          "name": "POST-03 - Error Handling Still Correct",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "console.log('[POSTCONDITION] Vérification gestion des erreurs...');"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('POST-03: Erreur 400 correctement retournée pour catégorie invalide', function () {",
+                  "    pm.response.to.have.status(400);",
+                  "});",
+                  "",
+                  "pm.test('POST-03: Corps d\\'erreur structuré correctement', function () {",
+                  "    const body = pm.response.json();",
+                  "    pm.expect(body.error).to.be.true;",
+                  "    pm.expect(body).to.have.property('message');",
+                  "});",
+                  "",
+                  "console.log('[POSTCONDITION] Gestion des erreurs API intacte après tests RF');"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{jokeapi_base_url}}/joke/CategorieInexistante",
+              "host": ["{{jokeapi_base_url}}"],
+              "path": ["joke", "CategorieInexistante"]
+            },
+            "description": "Vérifie que la gestion des erreurs API est toujours correcte après la suite de tests RF."
+          }
+        }
+      ]
+    }
+  ]
+}
