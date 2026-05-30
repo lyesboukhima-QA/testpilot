@@ -1,0 +1,16 @@
+{
+  "name": "testpilot-cypress",
+  "version": "1.0.0",
+  "description": "Apprentissage Cypress - de zéro à maître",
+  "scripts": {
+    "cy:open": "cypress open",
+    "cy:run": "cypress run",
+    "cy:run:module1": "cypress run --spec 'cypress/e2e/01-bases/**/*.cy.js'",
+    "cy:run:module2": "cypress run --spec 'cypress/e2e/02-interactions/**/*.cy.js'",
+    "cy:run:module3": "cypress run --spec 'cypress/e2e/03-reseau/**/*.cy.js'",
+    "cy:run:module4": "cypress run --spec 'cypress/e2e/04-avance/**/*.cy.js'"
+  },
+  "devDependencies": {
+    "cypress": "^13.10.0"
+  }
+}

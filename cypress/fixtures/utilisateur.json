@@ -1,0 +1,8 @@
+{
+  "id": 1,
+  "prenom": "Lyes",
+  "nom": "Test",
+  "email": "lyes@test.com",
+  "role": "admin",
+  "actif": true
+}
